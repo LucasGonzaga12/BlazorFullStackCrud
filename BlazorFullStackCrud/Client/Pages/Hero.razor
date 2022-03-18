@@ -36,7 +36,8 @@ else
         </InputSelect>
     </div>
     <br />
-    <buttom type="submit" class="btn btn-primary">@btnText</buttom>
+    <button type="submit" class="btn btn-primary">@btnText</button>
+    <button type="button" class="btn btn-danger" @onclick="DeleteHero"> Delete Hero</button>
 </EditForm>
 @code {
     [Parameter]
@@ -56,7 +57,9 @@ else
     {
         if (Id == null)
         {
-            //create a new hero
+            hero.Comic = SuperHeroService.Comics[0];
+            hero.ComicId = hero.Comic.Id;
+
         }
         else
         {
@@ -65,6 +68,17 @@ else
     }
     async Task HandleSubmit()
     {
-
+        if(Id == null)
+        {
+            await SuperHeroService.CreateHero(hero);
+        }
+        else
+        {
+            await SuperHeroService.UpdateHero(hero);
+        }
+    }
+    async Task DeleteHero()
+    {
+        await SuperHeroService.DeleteHero(hero.Id);
     }
 }
